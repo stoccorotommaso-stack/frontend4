@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il mio Progetto Full Stack</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; background-color: #121212; color: white; }
+        .container { text-align: center; background: #1e1e1e; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); max-width: 400px; }
+        button { background: #00cf8d; color: #121212; border: none; padding: 12px 24px; font-size: 1rem; font-weight: bold; border-radius: 5px; cursor: pointer; transition: 0.3s; margin-top: 20px; }
+        button:hover { background: #00a36f; transform: scale(1.05); }
+        #quote-text { font-style: italic; color: #b0b0b0; min-height: 50px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Dev Quote Generator</h1>
+        <p id="quote-text">Premi il tasto per ricevere saggezza dal server...</p>
+        <button onclick="getQuote()">Genera Citazione</button>
+    </div>
+
+    <script>
+        async function getQuote() {
+            const display = document.getElementById('quote-text');
+            const btn = document.querySelector('button');
+            
+            btn.disabled = true;
+            display.innerText = "Caricamento in corso...";
+
+            try {
+                // Chiamata al tuo Back-end su Render
+                const response = await fetch('https://backend1-htll.onrender.com/quote');
+                const data = await response.json();
+                
+                display.innerText = `"${data.message}"`;
+            } catch (error) {
+                display.innerText = "Errore di connessione. Forse il server si sta svegliando?";
+                console.error("Errore:", error);
+            } finally {
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
